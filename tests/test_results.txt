@@ -1,0 +1,58 @@
+# Unicorn
+     execution: local
+        script: test_suggestions.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m10s max duration (incl. graceful stop):
+              * default: Up to 100 looping VUs for 1m40s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% 747 out of 747
+     data_received..................: 1.6 MB  16 kB/s
+     data_sent......................: 121 kB  1.2 kB/s
+     http_req_blocked...............: avg=653.03µs min=3.81µs  med=8.14µs  max=370.21ms p(90)=258.12µs p(95)=303.14µs
+     http_req_connecting............: avg=50.1µs   min=0s      med=0s      max=11.52ms  p(90)=180.42µs p(95)=221.42µs
+     http_req_duration..............: avg=10.22s   min=63.55ms med=10.23s  max=18.93s   p(90)=16.56s   p(95)=17.08s  
+       { expected_response:true }...: avg=10.22s   min=63.55ms med=10.23s  max=18.93s   p(90)=16.56s   p(95)=17.08s  
+     http_req_failed................: 0.00%   0 out of 747
+     http_req_receiving.............: avg=6.9ms    min=66.75µs med=1.79ms  max=87.8ms   p(90)=21.55ms  p(95)=31.87ms 
+     http_req_sending...............: avg=34.23µs  min=9.24µs  med=31.66µs max=155µs    p(90)=53.1µs   p(95)=64.46µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s      max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=10.22s   min=63.33ms med=10.23s  max=18.91s   p(90)=16.56s   p(95)=17.08s  
+     http_reqs......................: 747     7.262938/s
+     iteration_duration.............: avg=11.22s   min=1.06s   med=11.23s  max=19.93s   p(90)=17.56s   p(95)=18.09s  
+     iterations.....................: 747     7.262938/s
+     vus............................: 24      min=4          max=100
+     vus_max........................: 100     min=100        max=100
+
+#Guniorn
+
+    execution: local
+        script: test_suggestions.js
+        output: json (results.html)
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m10s max duration (incl. graceful stop):
+              * default: Up to 100 looping VUs for 1m40s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% 2403 out of 2403
+     data_received..................: 5.1 MB  51 kB/s
+     data_sent......................: 391 kB  3.9 kB/s
+     http_req_blocked...............: avg=129.01µs min=2.91µs  med=8.49µs   max=100.72ms p(90)=14.31µs p(95)=35.49µs
+     http_req_connecting............: avg=16.99µs  min=0s      med=0s       max=15.46ms  p(90)=0s      p(95)=0s     
+     http_req_duration..............: avg=2.36s    min=63.5ms  med=2.47s    max=6.36s    p(90)=3.66s   p(95)=4.12s  
+       { expected_response:true }...: avg=2.36s    min=63.5ms  med=2.47s    max=6.36s    p(90)=3.66s   p(95)=4.12s  
+     http_req_failed................: 0.00%   0 out of 2403
+     http_req_receiving.............: avg=8.33ms   min=27.3µs  med=161.31µs max=333.32ms p(90)=26.16ms p(95)=54.3ms 
+     http_req_sending...............: avg=400.29µs min=8.03µs  med=26µs     max=126.49ms p(90)=46.07µs p(95)=62.4µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s      p(95)=0s     
+     http_req_waiting...............: avg=2.35s    min=63.38ms med=2.46s    max=6.36s    p(90)=3.65s   p(95)=4.09s  
+     http_reqs......................: 2403    23.863075/s
+     iteration_duration.............: avg=3.37s    min=1.06s   med=3.48s    max=7.36s    p(90)=4.69s   p(95)=5.13s  
+     iterations.....................: 2403    23.863075/s
+     vus............................: 8       min=4            max=100
+     vus_max........................: 100     min=100          max=100
