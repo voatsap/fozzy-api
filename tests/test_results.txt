@@ -1,31 +1,4 @@
-# Unicorn
-     execution: local
-        script: test_suggestions.js
-        output: -
-
-     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m10s max duration (incl. graceful stop):
-              * default: Up to 100 looping VUs for 1m40s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
-
-
-     ✓ status is 200
-
-     checks.........................: 100.00% 747 out of 747
-     data_received..................: 1.6 MB  16 kB/s
-     data_sent......................: 121 kB  1.2 kB/s
-     http_req_blocked...............: avg=653.03µs min=3.81µs  med=8.14µs  max=370.21ms p(90)=258.12µs p(95)=303.14µs
-     http_req_connecting............: avg=50.1µs   min=0s      med=0s      max=11.52ms  p(90)=180.42µs p(95)=221.42µs
-     http_req_duration..............: avg=10.22s   min=63.55ms med=10.23s  max=18.93s   p(90)=16.56s   p(95)=17.08s  
-       { expected_response:true }...: avg=10.22s   min=63.55ms med=10.23s  max=18.93s   p(90)=16.56s   p(95)=17.08s  
-     http_req_failed................: 0.00%   0 out of 747
-     http_req_receiving.............: avg=6.9ms    min=66.75µs med=1.79ms  max=87.8ms   p(90)=21.55ms  p(95)=31.87ms 
-     http_req_sending...............: avg=34.23µs  min=9.24µs  med=31.66µs max=155µs    p(90)=53.1µs   p(95)=64.46µs 
-     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s      max=0s       p(90)=0s       p(95)=0s      
-     http_req_waiting...............: avg=10.22s   min=63.33ms med=10.23s  max=18.91s   p(90)=16.56s   p(95)=17.08s  
-     http_reqs......................: 747     7.262938/s
-     iteration_duration.............: avg=11.22s   min=1.06s   med=11.23s  max=19.93s   p(90)=17.56s   p(95)=18.09s  
-     iterations.....................: 747     7.262938/s
-     vus............................: 24      min=4          max=100
-     vus_max........................: 100     min=100        max=100
+Testing scenarios to achieve 1000 simultanious users.
 
 #Gunicorn 4 workers
 
@@ -86,3 +59,32 @@
      iterations.....................: 3207    31.864717/s
      vus............................: 7       min=4            max=100
      vus_max........................: 100     min=100          max=100
+
+# Container Usage during test
+# CPU model name      : Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz
+
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
+cc0ab8f49b14   determined_volhard   522.76%   6.442GiB / 19.55GiB   32.96%    2.29MB / 14.5MB   98.3kB / 1.16MB   167
+
+
+Performance Estimation for 1,000 Concurrent Users
+    Current Local Testing:
+        •	100 VUs, ~1.52s average response time, ~2.4s P95.
+        •	Single container using ~5 CPU cores and ~6.4 GiB RAM.
+        •	Goal: 1,000 VUs with <1s P95 latency.
+
+Proposed Fargate Configuration:
+    •	ECS Service with 10 tasks, each 4 vCPU / 8 GiB.
+    •	Total 40 vCPUs and 80 GiB memory.
+    •	Place behind an Application Load Balancer with path-based or host-based routing, health checks, etc.
+    •	Configure autoscaling on CPU or request count to handle peak loads dynamically.
+
+Approximate Fargate cost breakdown for a typical ecommerce-like application that scales up during the day and scales down overnight.
+
+    Estimated AWS Fargate Cost for an Ecommerce-Style App
+	•	Fargate Tasks: Each task has 4 vCPU + 8 GiB RAM.
+	•	Scaling: 10 tasks (peak) for 12 hours, 2 tasks (off-peak) for 12 hours.
+	•	Daily Cost: ~$28.44
+	•	Monthly Cost: ~$853
+	•	Additional Charges: ALB usage, data transfer, and CloudWatch logs can increase overall cost by ~10–20%, depending on traffic.
+	•	This configuration is a starting point; actual performance needs and traffic patterns may require adjustments in task count or sizing.
