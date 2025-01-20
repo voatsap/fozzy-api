@@ -27,7 +27,7 @@
      vus............................: 24      min=4          max=100
      vus_max........................: 100     min=100        max=100
 
-#Guniorn
+#Gunicorn 4 workers
 
     execution: local
         script: test_suggestions.js
@@ -55,4 +55,34 @@
      iteration_duration.............: avg=3.37s    min=1.06s   med=3.48s    max=7.36s    p(90)=4.69s   p(95)=5.13s  
      iterations.....................: 2403    23.863075/s
      vus............................: 8       min=4            max=100
+     vus_max........................: 100     min=100          max=100
+
+#Gunicorn 6x workers
+
+     execution: local
+        script: test_suggestions.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m10s max duration (incl. graceful stop):
+              * default: Up to 100 looping VUs for 1m40s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% 3207 out of 3207
+     data_received..................: 6.8 MB  68 kB/s
+     data_sent......................: 520 kB  5.2 kB/s
+     http_req_blocked...............: avg=109.9µs min=3.22µs  med=8.74µs  max=261.03ms p(90)=14.69µs  p(95)=22.34µs
+     http_req_connecting............: avg=16.68µs min=0s      med=0s      max=27.89ms  p(90)=0s       p(95)=0s     
+     http_req_duration..............: avg=1.52s   min=64.43ms med=1.62s   max=3.77s    p(90)=2.24s    p(95)=2.4s   
+       { expected_response:true }...: avg=1.52s   min=64.43ms med=1.62s   max=3.77s    p(90)=2.24s    p(95)=2.4s   
+     http_req_failed................: 0.00%   0 out of 3207
+     http_req_receiving.............: avg=1.61ms  min=30.03µs med=218.5µs max=145.48ms p(90)=804.17µs p(95)=6.74ms 
+     http_req_sending...............: avg=32.28µs min=8.82µs  med=26.1µs  max=4.96ms   p(90)=43.25µs  p(95)=53.63µs
+     http_req_tls_handshaking.......: avg=0s      min=0s      med=0s      max=0s       p(90)=0s       p(95)=0s     
+     http_req_waiting...............: avg=1.52s   min=64.14ms med=1.61s   max=3.75s    p(90)=2.24s    p(95)=2.4s   
+     http_reqs......................: 3207    31.864717/s
+     iteration_duration.............: avg=2.52s   min=1.06s   med=2.62s   max=4.77s    p(90)=3.25s    p(95)=3.4s   
+     iterations.....................: 3207    31.864717/s
+     vus............................: 7       min=4            max=100
      vus_max........................: 100     min=100          max=100

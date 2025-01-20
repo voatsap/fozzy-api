@@ -29,4 +29,4 @@ EXPOSE 8000
 
 # Use Uvicorn as the entrypoint. Adjust host/port as needed.
 #CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "api:app", "--bind", "0.0.0.0:8000", "--workers", "4"]
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "api:app", "--bind", "0.0.0.0:8000", "--workers", "6", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-"]
